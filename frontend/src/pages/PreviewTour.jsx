@@ -12,7 +12,7 @@ export default function PreviewTour() {
     const fetchTour = async () => {
       try {
         const res = await fetch(`http://localhost:5000/api/tours/${id}`, {
-          headers: user?.token ? { Authorization: `Bearer ${user.token}` } : {}, // no auth header for public tours
+          headers: user?.token ? { Authorization: `Bearer ${user.token}` } : {},
         });
 
         if (!res.ok) throw new Error("Unauthorized or not found");
@@ -27,23 +27,30 @@ export default function PreviewTour() {
     fetchTour();
   }, [id, user]);
 
-  if (!tour) return <p className="text-center mt-10">Loading...</p>;
+  if (!tour) {
+    return (
+      <p className="text-center mt-10 text-gray-600 dark:text-gray-300">
+        Loading...
+      </p>
+    );
+  }
 
-  // Edge case: If there are no steps in the tour
   if (tour.steps.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto mt-10 p-4 text-center">
-        <h1 className="text-2xl font-bold mb-4">{tour.title}</h1>
-        <p className="text-lg text-gray-600">
-          No steps available for this tour.
-        </p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 py-10 px-4">
+        <div className="max-w-2xl mx-auto mt-10 p-4 text-center bg-white dark:bg-gray-900 shadow-md rounded-md">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+            {tour.title}
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            No steps available for this tour.
+          </p>
+        </div>
       </div>
     );
   }
 
   const step = tour.steps[currentStep];
-
-  // Check if current step's media is video or image
   const isVideo = step.imageUrl?.startsWith("data:video");
 
   const handleNext = () => {
@@ -55,43 +62,49 @@ export default function PreviewTour() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4 text-center">
-      <h1 className="text-2xl font-bold mb-4">{tour.title}</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 py-10 px-4">
+      <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6 text-center">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+          {tour.title}
+        </h1>
 
-      <div className="transition-opacity duration-500 ease-in-out opacity-100 mb-6">
-        <div className="mb-4">
-          {isVideo ? (
-            <video
-              src={step.imageUrl}
-              controls
-              className="w-full h-auto rounded border"
-            />
-          ) : (
-            <img
-              src={step.imageUrl}
-              alt={`Step ${currentStep + 1}`}
-              className="w-full h-auto rounded border"
-            />
-          )}
+        <div className="transition-opacity duration-500 ease-in-out opacity-100 mb-6">
+          <div className="mb-4">
+            {isVideo ? (
+              <video
+                src={step.imageUrl}
+                controls
+                className="w-full h-auto rounded-md border dark:border-gray-700"
+              />
+            ) : (
+              <img
+                src={step.imageUrl}
+                alt={`Step ${currentStep + 1}`}
+                className="w-full h-auto rounded-md border dark:border-gray-700"
+              />
+            )}
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 mb-4">
+            {step.description}
+          </p>
         </div>
-        <p className="mb-4">{step.description}</p>
-      </div>
 
-      <div className="flex justify-between">
-        <button
-          onClick={handlePrevious}
-          disabled={currentStep === 0}
-          className="bg-gray-300 px-4 py-2 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentStep === tour.steps.length - 1}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
+        <div className="flex justify-between gap-4">
+          <button
+            onClick={handlePrevious}
+            disabled={currentStep === 0}
+            className="px-5 py-2 cursor-pointer rounded-md font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition disabled:opacity-50 backdrop-blur"
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={currentStep === tour.steps.length - 1}
+            className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 cursor-pointer transition"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

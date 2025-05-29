@@ -46,9 +46,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-sky-200 px-4">
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h1 className="text-3xl font-bold text-center text-sky-800 mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 px-4">
+      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
           Welcome Back
         </h1>
 
@@ -62,7 +62,7 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -70,7 +70,7 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -79,17 +79,26 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded transition duration-200 font-medium"
+            className="relative w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-3 rounded transition duration-200 font-medium focus:outline-none focus:ring-4 focus:ring-blue-400 disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden"
           >
-            {loading ? "Logging in..." : "Login"}
+            {/* Blur background layer */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-blue-600 backdrop-blur-sm transition duration-200 hover:bg-blue-700 rounded"
+            ></span>
+
+            {/* Text layer */}
+            <span className="relative z-10">
+              {loading ? "Logging in..." : "Login"}
+            </span>
           </button>
         </form>
 
-        <p className="text-center text-sm mt-6 text-gray-600">
+        <p className="text-center text-sm mt-6 text-gray-600 dark:text-gray-300">
           New to TourCraft?{" "}
           <Link
             to="/signup"
-            className="text-sky-600 hover:underline font-medium"
+            className="text-blue-600 hover:underline dark:text-blue-400 font-medium"
           >
             Create an account
           </Link>

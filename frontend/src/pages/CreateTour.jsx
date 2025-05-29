@@ -7,8 +7,8 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 export default function CreateTour() {
   const [title, setTitle] = useState("");
   const [steps, setSteps] = useState([]);
-  const [recordingBase64, setRecordingBase64] = useState(null); // 💡 Store recording as base64
-  const [isPublic, setIsPublic] = useState(true); // default true or false as you prefer
+  const [recordingBase64, setRecordingBase64] = useState(null);
+  const [isPublic, setIsPublic] = useState(true);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -31,7 +31,6 @@ export default function CreateTour() {
     reader.readAsDataURL(file);
   };
 
-  // Handle drag-and-drop to reorder steps
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const reorderedSteps = Array.from(steps);
@@ -48,7 +47,6 @@ export default function CreateTour() {
       description: step.description,
     }));
 
-    // Prepend screen recording if available
     if (recordingBase64) {
       formattedSteps.unshift({
         imageUrl: recordingBase64,
@@ -59,7 +57,7 @@ export default function CreateTour() {
     const body = JSON.stringify({
       title,
       steps: formattedSteps,
-      isPublic, // include here
+      isPublic,
     });
 
     const res = await fetch("http://localhost:5000/api/tours", {
@@ -80,141 +78,145 @@ export default function CreateTour() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-semibold text-center mb-6">
-        Create a New Product Tour
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 py-10 px-4">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8">
+        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
+          Create a New Product Tour
+        </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <input
-          type="text"
-          placeholder="Tour Title"
-          className="w-full  p-3 border rounded-md shadow-sm"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="steps">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="space-y-6"
-              >
-                {steps.map((step, index) => (
-                  <Draggable
-                    key={index}
-                    draggableId={`step-${index}`}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={`p-4 border rounded-md shadow-sm bg-gray-50 ${
-                          snapshot.isDragging ? "bg-blue-100" : ""
-                        }`}
-                      >
-                        <label className="block font-medium">
-                          Step {index + 1}
-                        </label>
-
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) =>
-                            handleImageUpload(index, e.target.files[0])
-                          }
-                          className="hidden"
-                          id={`file-input-${index}`}
-                        />
-                        <label
-                          htmlFor={`file-input-${index}`}
-                          className="block w-full mt-2 p-4 text-center cursor-pointer border-2 border-dashed rounded-md border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-800 transition-all duration-200 ease-in-out"
-                        >
-                          <span className="block text-lg font-medium">
-                            Choose Image
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            or drag and drop
-                          </span>
-                        </label>
-
-                        {step.imageUrl && (
-                          <img
-                            src={step.imageUrl}
-                            alt={`Step ${index + 1}`}
-                            className="w-full h-auto rounded-md mt-2"
-                          />
-                        )}
-
-                        <textarea
-                          placeholder="Step description..."
-                          className="w-full mt-2 p-2 border rounded-md"
-                          value={step.description}
-                          onChange={(e) =>
-                            handleStepChange(
-                              index,
-                              "description",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-
-        <button
-          type="button"
-          onClick={handleAddStep}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          + Add Step
-        </button>
-
-        {/* Make Tour Public Toggle */}
-        <label className="flex items-center space-x-2 mt-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
-            type="checkbox"
-            checked={isPublic}
-            onChange={() => setIsPublic((prev) => !prev)}
-            className="form-checkbox"
+            type="text"
+            placeholder="Tour Title"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-white"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
           />
-          <span>Make this tour public</span>
-        </label>
 
-        <div className="mt-6">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="steps">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-6"
+                >
+                  {steps.map((step, index) => (
+                    <Draggable
+                      key={index}
+                      draggableId={`step-${index}`}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`p-4 border rounded-md shadow-sm ${
+                            snapshot.isDragging
+                              ? "bg-blue-50 dark:bg-blue-900"
+                              : "bg-gray-50 dark:bg-gray-800"
+                          }`}
+                        >
+                          <label className="block font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Step {index + 1}
+                          </label>
+
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              handleImageUpload(index, e.target.files[0])
+                            }
+                            className="hidden"
+                            id={`file-input-${index}`}
+                          />
+                          <label
+                            htmlFor={`file-input-${index}`}
+                            className="block w-full mt-2 p-4 text-center cursor-pointer border-2 border-dashed rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
+                          >
+                            <span className="block text-lg font-medium">
+                              Choose Image
+                            </span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              or drag and drop
+                            </span>
+                          </label>
+
+                          {step.imageUrl && (
+                            <img
+                              src={step.imageUrl}
+                              alt={`Step ${index + 1}`}
+                              className="w-full h-auto rounded-md mt-2"
+                            />
+                          )}
+
+                          <textarea
+                            placeholder="Step description..."
+                            className="w-full mt-3 p-3 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-blue-400"
+                            value={step.description}
+                            onChange={(e) =>
+                              handleStepChange(
+                                index,
+                                "description",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+
           <button
-            type="submit"
-            className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
+            type="button"
+            onClick={handleAddStep}
+            className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 cursor-pointer transition"
           >
-            Save Tour
+            + Add Step
           </button>
-        </div>
-      </form>
 
-      {/* 🟦 Screen Recorder Section */}
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-4">Optional: Record Screen</h2>
+          <label className="flex items-center space-x-2 mt-4 text-gray-700 dark:text-gray-300">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={() => setIsPublic((prev) => !prev)}
+              className="form-checkbox text-blue-600 dark:bg-gray-800"
+            />
+            <span>Make this tour public</span>
+          </label>
 
-        {/* Display recording added message */}
-        {recordingBase64 && (
-          <div className="bg-green-100 text-green-800 p-4 rounded-md mb-4">
-            <p className="font-semibold">Video recording added successfully!</p>
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 cursor-pointer transition"
+            >
+              Save Tour
+            </button>
           </div>
-        )}
+        </form>
 
-        {/* ScreenRecorder component */}
-        <ScreenRecorder onSave={(base64) => setRecordingBase64(base64)} />
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            Optional: Record Screen
+          </h2>
+
+          {recordingBase64 && (
+            <div className="bg-green-100 text-green-800 p-4 rounded-md mb-4 dark:bg-green-900 dark:text-green-200">
+              <p className="font-semibold">
+                Video recording added successfully!
+              </p>
+            </div>
+          )}
+
+          <ScreenRecorder onSave={(base64) => setRecordingBase64(base64)} />
+        </div>
       </div>
     </div>
   );

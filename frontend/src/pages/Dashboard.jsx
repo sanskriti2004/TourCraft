@@ -43,52 +43,87 @@ export default function Dashboard() {
     alert("Public link copied to clipboard.");
   };
 
+  // Reusable button with blur background effect
+  const BlurButton = ({
+    children,
+    className = "",
+    disabled = false,
+    onClick,
+    type = "button",
+  }) => (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={`relative overflow-hidden rounded transition duration-200 font-medium focus:outline-none focus:ring-4 focus:ring-opacity-50 disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
+    >
+      {/* Blur background */}
+      <span
+        aria-hidden="true"
+        className={`absolute inset-0 rounded transition duration-200 ${
+          disabled ? "" : "backdrop-blur-sm"
+        }`}
+      />
+      {/* Text */}
+      <span className="relative z-10">{children}</span>
+    </button>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-white to-sky-200 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4">
-          <h1 className="text-4xl font-bold text-sky-800 text-center sm:text-left">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 text-center sm:text-left">
             Your Product Tours
           </h1>
           <div className="flex gap-4">
-            <Link
-              to="/analytics"
-              className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+            <BlurButton
+              className="bg-indigo-600  hover:bg-indigo-700 focus:ring-indigo-400 cursor-pointer px-4 py-2 text-white"
+              onClick={() => navigate("/analytics")}
             >
               Analytics
-            </Link>
-            <button
+            </BlurButton>
+            <BlurButton
+              className="bg-red-500 cursor-pointer hover:bg-red-600 focus:ring-red-400 px-4 py-2 text-white"
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
             >
               Logout
-            </button>
+            </BlurButton>
           </div>
         </div>
 
         <div className="mb-6 text-center">
           <Link
             to="/create-tour"
-            className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition"
+            className="inline-block relative overflow-hidden rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition duration-200 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-opacity-50"
           >
-            + Create New Tour
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-lg backdrop-blur-sm"
+            />
+            <span className="relative z-10">+ Create New Tour</span>
           </Link>
         </div>
 
         {loading ? (
-          <p className="text-center text-gray-600">Loading your tours...</p>
+          <p className="text-center text-gray-600 dark:text-gray-300">
+            Loading your tours...
+          </p>
         ) : tours.length === 0 ? (
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 dark:text-gray-300">
             You haven’t created any tours yet.
           </p>
         ) : (
           <ul className="grid gap-6 md:grid-cols-2">
             {tours.map((tour) => (
-              <li key={tour._id} className="bg-white shadow-md rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-sky-800 mb-1">
+              <li
+                key={tour._id}
+                className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6"
+              >
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-1">
                   {tour.title}
                 </h2>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                   {tour.steps.length} steps •{" "}
                   {tour.isPublic ? "Public" : "Private"}
                 </p>
@@ -96,29 +131,29 @@ export default function Dashboard() {
                 <div className="flex flex-wrap gap-3 mb-3">
                   <Link
                     to={`/edit-tour/${tour._id}`}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     Edit
                   </Link>
                   <Link
                     to={`/preview/${tour._id}`}
-                    className="text-purple-600 hover:underline"
+                    className="text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     Preview
                   </Link>
                 </div>
 
-                <button
-                  onClick={() => handleShare(tour._id)}
+                <BlurButton
                   disabled={!tour.isPublic}
-                  className={`w-full text-center py-2 rounded transition font-medium ${
+                  onClick={() => handleShare(tour._id)}
+                  className={`w-full cursor-pointer py-2 rounded text-white ${
                     tour.isPublic
-                      ? "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-blue-500 hover:bg-blue-600 focus:ring-blue-400"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   {tour.isPublic ? "Copy Public Link" : "Private Tour"}
-                </button>
+                </BlurButton>
               </li>
             ))}
           </ul>

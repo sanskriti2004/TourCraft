@@ -51,9 +51,9 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-sky-200 px-4">
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h1 className="text-3xl font-bold text-center text-sky-800 mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 px-4">
+      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
           Create an Account
         </h1>
 
@@ -67,7 +67,7 @@ export default function Signup() {
           <input
             type="text"
             placeholder="Full Name"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -75,7 +75,7 @@ export default function Signup() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -83,7 +83,7 @@ export default function Signup() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -92,17 +92,17 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded transition duration-200 font-medium"
+            className={`w-full bg-blue-600 cursor-pointer  hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 text-white py-3 rounded shadow-md hover:shadow-lg font-medium focus:outline-none focus:ring-4 focus:ring-blue-400 disabled:opacity-60 disabled:cursor-not-allowed`}
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
-        <p className="text-center text-sm mt-6 text-gray-600">
+        <p className="text-center text-sm mt-6 text-gray-600 dark:text-gray-300">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-sky-600 hover:underline font-medium"
+            className="text-blue-600 hover:underline dark:text-blue-400 font-medium"
           >
             Log in here
           </Link>

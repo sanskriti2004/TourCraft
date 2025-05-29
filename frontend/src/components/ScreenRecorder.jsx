@@ -46,14 +46,14 @@ export default function ScreenRecorder({ onSave }) {
       {recording ? (
         <button
           onClick={stopRecording}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-red-500 cursor-pointer text-white px-4 py-2 rounded"
         >
           Stop Recording
         </button>
       ) : (
         <button
           onClick={startRecording}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded"
         >
           Start Screen Recording
         </button>

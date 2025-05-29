@@ -47,8 +47,8 @@ app.use(
 );
 
 // Middleware
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+app.use(express.json({ limit: "300mb" }));
+app.use(express.urlencoded({ limit: "300mb", extended: true }));
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
