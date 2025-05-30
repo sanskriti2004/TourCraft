@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const Tour = require("../models/tourModel");
 
 // @desc    Create new tour
@@ -35,6 +36,12 @@ const getTours = asyncHandler(async (req, res) => {
 // @route   GET /api/tours/:id
 // @access  Private
 const getTourById = asyncHandler(async (req, res) => {
+  // Validate if the ID is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400);
+    throw new Error("Invalid tour ID format");
+  }
+
   const tour = await Tour.findById(req.params.id);
 
   if (tour && tour.user.toString() === req.user._id.toString()) {
@@ -50,6 +57,12 @@ const getTourById = asyncHandler(async (req, res) => {
 // @access  Private
 const updateTour = asyncHandler(async (req, res) => {
   const { title, steps, isPublic } = req.body;
+
+  // Validate if the ID is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400);
+    throw new Error("Invalid tour ID format");
+  }
 
   const tour = await Tour.findById(req.params.id);
 
@@ -70,6 +83,12 @@ const updateTour = asyncHandler(async (req, res) => {
 // @route   DELETE /api/tours/:id
 // @access  Private
 const deleteTour = asyncHandler(async (req, res) => {
+  // Validate if the ID is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400);
+    throw new Error("Invalid tour ID format");
+  }
+
   const tour = await Tour.findById(req.params.id);
 
   if (tour && tour.user.toString() === req.user._id.toString()) {
