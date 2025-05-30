@@ -95,19 +95,19 @@ npm install
 ```bash
 # Start backend
 cd backend
-node server.js
+npm start
 
 # Start frontend
 cd frontend
-npm run dev
+npm start
 ```
 
 ---
 
 ## 🌍 Deployment Links
 
-* 🔗 **Frontend**: [https://your-frontend.vercel.app](https://your-frontend.vercel.app)
-* 🔗 **Backend**: [https://your-backend-api.onrender.com](https://your-backend-api.onrender.com)
+* 🔗 **Frontend**: https://tour-craft-frontend.vercel.app/
+* 🔗 **Backend**: https://tour-craft-backend.vercel.app/
 
 ---
 
