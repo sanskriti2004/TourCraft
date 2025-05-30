@@ -13,11 +13,23 @@ connectDB();
 
 const app = express();
 
-// ✅ Enable CORS for your frontend (Vite runs on 5173 by default)
+// ✅ Enable CORS for both local and production frontend
+const allowedOrigins = [
+  "http://localhost:5173", // Local development
+  "https://tour-craft-frontend.vercel.app", // Deployed frontend (Vercel)
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // your React frontend
-    credentials: true, // if you ever use cookies
+    origin: function (origin, callback) {
+      // Check if the origin is in the allowed origins list
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // Allow the origin
+      } else {
+        callback(new Error("Not allowed by CORS")); // Reject the origin
+      }
+    },
+    credentials: true, // Allow cookies to be sent with the request
   })
 );
 
