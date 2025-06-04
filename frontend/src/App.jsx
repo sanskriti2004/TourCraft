@@ -6,17 +6,16 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CreateTour from "./pages/CreateTour";
 import PreviewTour from "./pages/PreviewTour";
 import EditTour from "./pages/EditTour";
-import LandingPage from "./pages/LandingPage"; // ✅ NEW
-import AnalyticsDashboard from "./pages/AnalyticsDashboard"; // ✅ NEW
+import LandingPage from "./pages/LandingPage";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { ThemeProvider } from "./context/ThemeContext";
-import ThemeSwitch from "./components/ThemeSwitch"; // ✅ NEW
-
+import ThemeSwitch from "./components/ThemeSwitch";
 export default function App() {
   return (
     <ThemeProvider>
       <ThemeSwitch />
       <Routes>
-        <Route path="/" element={<LandingPage />} /> {/* ✅ Landing Page */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route

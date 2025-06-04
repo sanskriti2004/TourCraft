@@ -11,11 +11,14 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/tours", {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const res = await fetch(
+          "https://tour-craft-backend.vercel.app/api/tours",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to load tours.");

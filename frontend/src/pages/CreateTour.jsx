@@ -60,7 +60,7 @@ export default function CreateTour() {
       isPublic,
     });
 
-    const res = await fetch("http://localhost:5000/api/tours", {
+    const res = await fetch("https://tour-craft-backend.vercel.app/api/tours", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

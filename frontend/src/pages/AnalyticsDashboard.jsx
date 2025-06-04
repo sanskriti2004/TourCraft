@@ -9,9 +9,12 @@ export default function AnalyticsDashboard() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/tours", {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
+        const res = await fetch(
+          "https://tour-craft-backend.vercel.app/api/tours",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
 
         if (!res.ok) throw new Error("Failed to fetch tours.");
         const tours = await res.json();

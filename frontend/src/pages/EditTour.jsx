@@ -18,30 +18,16 @@ export default function EditTour() {
   const selfUpdateRef = useRef(false);
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000");
-    socketRef.current.emit("join-tour", id);
-
-    socketRef.current.on("tour-update", (data) => {
-      if (!selfUpdateRef.current) {
-        if (data.title !== undefined) setTitle(data.title);
-        if (data.steps !== undefined) setSteps(data.steps);
-      }
-      selfUpdateRef.current = false;
-    });
-
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, [id]);
-
-  useEffect(() => {
     const fetchTour = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/tours/${id}`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
+        const res = await fetch(
+          `https://tour-craft-backend.vercel.app/api/tours/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
 
         const data = await res.json();
         setTitle(data.title);
@@ -129,14 +115,17 @@ export default function EditTour() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/tours/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
-        body: JSON.stringify({ title, steps }),
-      });
+      const res = await fetch(
+        `https://tour-craft-backend.vercel.app/api/tours/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.token}`,
+          },
+          body: JSON.stringify({ title, steps }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to update tour");
 

@@ -11,9 +11,14 @@ export default function PreviewTour() {
   useEffect(() => {
     const fetchTour = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/tours/${id}`, {
-          headers: user?.token ? { Authorization: `Bearer ${user.token}` } : {},
-        });
+        const res = await fetch(
+          `https://tour-craft-backend.vercel.app/api/tours/${id}`,
+          {
+            headers: user?.token
+              ? { Authorization: `Bearer ${user.token}` }
+              : {},
+          }
+        );
 
         if (!res.ok) throw new Error("Unauthorized or not found");
 
